@@ -1,5 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-const Total = ({ numberOfExercises }) => <p>Number of exercises {numberOfExercises}</p>
+const Total = ({ parts }) => {
+	let numberOfExercises = 0;
+	parts.forEach(part => numberOfExercises += part.exercises);
 
-export default Total
+  return (
+		<p><b>Total of {numberOfExercises} exercises</b></p>
+	) 
+}
+
+
+export default Total;

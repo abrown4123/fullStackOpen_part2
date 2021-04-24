@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from './Header';
 import Content from './Content';
-// import Total from './Total';
+import Total from './Total';
 
 const Course = ({ course }) => {
 	return (
@@ -10,7 +10,7 @@ const Course = ({ course }) => {
 			{course.parts.map( part => 
 				<Content key={part.id} name={part.name} exercises={part.exercises} />
 			)}
-			{/* <Total numberOfExercises={course.parts.length}/> */}
+			<Total parts={course.parts}/>
 		</div>
 	)
 }
