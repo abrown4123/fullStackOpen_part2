@@ -5,7 +5,7 @@ const App = ({ courses }) => {
   return (
     <>
       {courses.map(course => 
-        <Course id={course.id} course={course} />
+        <Course key={course.id} course={course} />
       )}
     </>
   )
