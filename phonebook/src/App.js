@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import People from './components/People'
+import Search from './components/Search'
+import AddPerson from './components/AddPerson'
 
 const App = () => {
   const [ persons, setPersons ] = useState([
@@ -8,12 +10,12 @@ const App = () => {
   const [ newName, setNewName ] = useState('');
   const [ newNumber, setNewNumber ] = useState('');
   const [ searchName, setSearchName ] = useState('');
-
+  
   const checkName = person => person.name === newName;
   const duplicatePeople = persons.find(checkName);
   const peopleToShow = searchName 
-    ? persons.filter(person => person.name.toLowerCase().includes(searchName.toLowerCase()))
-    : persons
+  ? persons.filter(person => person.name.toLowerCase().includes(searchName.toLowerCase()))
+  : persons
   
   const handleSubmit = event => {
     event.preventDefault();
@@ -47,29 +49,14 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <h3>Search</h3>
-      <div>
-        search: <input
-        value={searchName}
-        onChange={handleSearch}
-        />
-      </div>
-      <h3>add a new</h3>
-      <form onSubmit={handleSubmit}>
-        <div>
-          name: <input 
-            value={newName}
-            onChange={handleNameChange}
-          />
-          number: <input
-            value={newNumber}
-            onChange={handleNumberChange}
-          />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <Search searchName={searchName} handleSearch={handleSearch} />
+      <AddPerson 
+        handleSubmit={handleSubmit}
+        newName={newName}
+        handleNameChange={handleNameChange}
+        newNumber={newNumber}
+        handleNumberChange={handleNumberChange}
+      />
       <h2>Numbers</h2>
       {peopleToShow.map(person => 
         <People key={person.name} name={person.name} number={person.number} />
