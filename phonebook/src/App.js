@@ -1,12 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import People from './components/People'
 import Search from './components/Search'
 import AddPerson from './components/AddPerson'
+import axios from 'axios'
 
 const App = () => {
-  const [ persons, setPersons ] = useState([
-    { name: 'Arto Hellas', number: "123-1231" }
-  ]) 
+  const [ persons, setPersons ] = useState([]); 
   const [ newName, setNewName ] = useState('');
   const [ newNumber, setNewNumber ] = useState('');
   const [ searchName, setSearchName ] = useState('');
@@ -14,8 +13,19 @@ const App = () => {
   const checkName = person => person.name === newName;
   const duplicatePeople = persons.find(checkName);
   const peopleToShow = searchName 
-  ? persons.filter(person => person.name.toLowerCase().includes(searchName.toLowerCase()))
-  : persons
+    ? persons.filter(person => person.name.toLowerCase().includes(searchName.toLowerCase()))
+    : persons
+
+  const hook = () => {
+    console.log("inside the hook")
+    axios
+      .get("http://localhost:3001/persons")
+      .then(response => {
+        setPersons(response.data);
+      })
+  }
+
+  useEffect(hook, []);
   
   const handleSubmit = event => {
     event.preventDefault();
