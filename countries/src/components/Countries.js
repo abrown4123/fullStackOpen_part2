@@ -1,7 +1,17 @@
-import React from "react"
+import React, { useState } from "react"
 import Country from "./Country"
 
 const Countries = (props) => {
+
+  const [showState, setShowState] = useState({});
+  const [toggleInfo, setToggleInfo] = useState(false);
+  const handleClick = (name) => {
+    showState[name] 
+    ? setShowState({...showState, [name]: false}) 
+    : setShowState({...showState, [name]: true})
+
+    setToggleInfo(!toggleInfo)
+  }
 
   if (!props.countries.length) {
     return <div>Please search a country</div>
@@ -20,11 +30,17 @@ const Countries = (props) => {
   }
 
   return (
-  <div>
-    {props.countries.map(country =>
-      <p key={country.callingCodes + country.name}>{country.name}</p>
-    )}
-  </div>
+    <div>
+      {props.countries.map(country =>
+        <div key={country.callingCodes + country.name}>
+          <p>{country.name}</p> 
+          <button onClick={() => handleClick(country.name)}>show</button>
+          { showState[country.name] &&
+             <Country country={country}/>
+          }
+        </div>
+      )}
+    </div>
   )
 
 }
