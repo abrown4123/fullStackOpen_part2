@@ -34,7 +34,7 @@ const Countries = (props) => {
       {props.countries.map(country =>
         <div key={country.callingCodes + country.name}>
           <p>{country.name}</p> 
-          <button onClick={() => handleClick(country.name)}>show</button>
+          <button onClick={() => handleClick(country.name)}>{showState[country.name] ? "hide" : "show"}</button>
           { showState[country.name] &&
              <Country country={country}/>
           }
