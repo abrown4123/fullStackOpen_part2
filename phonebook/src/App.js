@@ -25,6 +25,18 @@ const App = () => {
   }
 
   useEffect(hook, []);
+
+  const deleteNumber = id => {
+    if (window.confirm("Are you sure you would like to delete this number?")){
+      numberService
+        .removeNumber(id)
+        .then(response=> {
+          console.log(response, "has been removed from db");
+          setPersons(persons.filter(person => person.id !== id));
+        })
+    }
+  }
+
   
   const handleSubmit = event => {
     event.preventDefault();
@@ -76,7 +88,11 @@ const App = () => {
       />
       <h2>Numbers</h2>
       {peopleToShow.map(person => 
-        <People key={person.name} name={person.name} number={person.number} />
+        <People 
+          key={person.id}
+          name={person.name} 
+          number={person.number} 
+          remove={() => deleteNumber(person.id)}/>
       )}
     </div>
   )

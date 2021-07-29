@@ -12,9 +12,14 @@ const create = newEntry => {
   return request.then(response => response.data);
 }
 
-const update = id => {
-  const request = axios.put(`${baseURL}/${id}`);
+const update = (id, updatedEntry) => {
+  const request = axios.put(`${baseURL}/${id}`, updatedEntry);
   return request.then(response => response.data);
 }
 
-export default { getAll, create, update };
+const removeNumber = id => {
+  const request = axios.delete(`${baseURL}/${id}`);
+  return request.then(response => response.data);
+}
+
+export default { getAll, create, update, removeNumber };
