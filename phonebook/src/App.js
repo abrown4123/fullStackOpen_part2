@@ -37,13 +37,27 @@ const App = () => {
     }
   }
 
+  const updateNumber = () => {
+    if (window.confirm(`${duplicatePeople.name} already exists. Would you like to update their number?`)) {
+      const id = duplicatePeople.id //creating this to not have to iterate duplicatePeople each time
+      const changedNumber = { ...duplicatePeople, number: newNumber}
+
+      numberService
+        .update(id, changedNumber)
+        .then(returnedNumber => {
+          setPersons(persons.map(person => person.id !== id ? person : returnedNumber))
+          setNewName('')
+          setNewNumber('');
+        })
+    }
+  }
+
   
   const handleSubmit = event => {
     event.preventDefault();
 
     if (duplicatePeople) {
-      setNewName('');
-      return alert(`${newName} already exists`);
+      return updateNumber();
     }
 
     const newEntry = {
