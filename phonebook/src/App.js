@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import People from './components/People'
 import Search from './components/Search'
 import AddPerson from './components/AddPerson'
-import axios from 'axios'
+import numberService from './services/numbers'
 
 const App = () => {
   const [ persons, setPersons ] = useState([]); 
@@ -17,11 +17,10 @@ const App = () => {
     : persons
 
   const hook = () => {
-    console.log("inside the hook")
-    axios
-      .get("http://localhost:3001/persons")
-      .then(response => {
-        setPersons(response.data);
+    numberService
+      .getAll()
+      .then(initialNumbers => {
+        setPersons(initialNumbers);
       })
   }
 
@@ -39,9 +38,17 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    setPersons(persons.concat(newEntry));
-    setNewName('');
-    setNewNumber('');
+
+    numberService
+      .create(newEntry)
+      .then(returnedNumber => {
+        setPersons(persons.concat(returnedNumber));
+        setNewName('');
+        setNewNumber('');
+      })
+      .catch(error => {
+        console.log("Number creation failed")
+      })
   }
 
   const handleNameChange = event => {
