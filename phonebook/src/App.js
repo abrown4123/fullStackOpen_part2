@@ -3,12 +3,14 @@ import People from './components/People'
 import Search from './components/Search'
 import AddPerson from './components/AddPerson'
 import numberService from './services/numbers'
+import Notification from './components/Notification';
 
 const App = () => {
   const [ persons, setPersons ] = useState([]); 
   const [ newName, setNewName ] = useState('');
   const [ newNumber, setNewNumber ] = useState('');
   const [ searchName, setSearchName ] = useState('');
+  const [addedNotification, setAddedNotification] = useState(null);
   
   const checkName = person => person.name === newName;
   const duplicatePeople = persons.find(checkName);
@@ -71,6 +73,10 @@ const App = () => {
         setPersons(persons.concat(returnedNumber));
         setNewName('');
         setNewNumber('');
+        setAddedNotification(`Added ${newName}`);
+        setTimeout(() => {
+          setAddedNotification(null);
+        }, 5000)
       })
       .catch(error => {
         console.log("Number creation failed")
@@ -92,6 +98,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={addedNotification} />
       <Search searchName={searchName} handleSearch={handleSearch} />
       <AddPerson 
         handleSubmit={handleSubmit}
