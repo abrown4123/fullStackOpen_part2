@@ -10,7 +10,8 @@ const App = () => {
   const [ newName, setNewName ] = useState('');
   const [ newNumber, setNewNumber ] = useState('');
   const [ searchName, setSearchName ] = useState('');
-  const [addedNotification, setAddedNotification] = useState(null);
+  const [ addedNotification, setAddedNotification ] = useState(null);
+  const [ notificationContext, setNotificationContext] = useState(null);
   
   const checkName = person => person.name === newName;
   const duplicatePeople = persons.find(checkName);
@@ -28,13 +29,20 @@ const App = () => {
 
   useEffect(hook, []);
 
-  const deleteNumber = id => {
+  const deleteNumber = deletedPerson => {
+    let {name, id} = deletedPerson;
     if (window.confirm("Are you sure you would like to delete this number?")){
       numberService
         .removeNumber(id)
         .then(response=> {
           console.log(response, "has been removed from db");
           setPersons(persons.filter(person => person.id !== id));
+        })
+        .catch(error => {
+          setAddedNotification(`Information of ${name} has already been removed from server`);
+          setTimeout(() => {
+            setAddedNotification(null);
+          }, 5000)
         })
     }
   }
@@ -73,8 +81,10 @@ const App = () => {
         setPersons(persons.concat(returnedNumber));
         setNewName('');
         setNewNumber('');
+        setNotificationContext(true);
         setAddedNotification(`Added ${newName}`);
         setTimeout(() => {
+          setNotificationContext(null);
           setAddedNotification(null);
         }, 5000)
       })
@@ -98,7 +108,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={addedNotification} />
+      <Notification message={addedNotification} context={notificationContext} />
       <Search searchName={searchName} handleSearch={handleSearch} />
       <AddPerson 
         handleSubmit={handleSubmit}
@@ -113,7 +123,7 @@ const App = () => {
           key={person.id}
           name={person.name} 
           number={person.number} 
-          remove={() => deleteNumber(person.id)}/>
+          remove={() => deleteNumber(person)}/>
       )}
     </div>
   )
