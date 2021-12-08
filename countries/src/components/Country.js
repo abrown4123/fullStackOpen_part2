@@ -31,6 +31,7 @@ const Country = ({ country }) => {
     <>
       <h1>{country.name}</h1>
       <p>capital {country.capital}</p>
+      <br />
       <p>population {country.population}</p>
       <h3>languages</h3>
       <ul>
